@@ -72,7 +72,11 @@ pipeline {
                     sh 'docker login -u $JFROG_USER -p $JFROG_PW $JFROG_HOST && \
                     docker image push "$JFROG_HOST/microservices/$REPO_NAME:$(git rev-parse HEAD)" && \
                     docker image push "$JFROG_HOST/microservices/$REPO_NAME:latest"'    
-        
+
+                    dir('target'){
+                        sh 'curl -X "PUT" -u "$JFROG_USER:$JFROG_PW" --upload-file "aline-gateway-0.1.0-SNAPSHOT.jar" "http://$JFROG_HOST/artifactory/microservices-jar-local/gateway-microservice-0.1.0.jar"'
+                    }
+
                 }
             }
 
